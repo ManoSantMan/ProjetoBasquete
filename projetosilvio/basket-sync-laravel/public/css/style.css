@@ -1,0 +1,101 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial Black', Arial, sans-serif;
+  background: #1a1a1a; /* preto escuro */
+  color: #eee;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  color: #f68b1e; /* laranja basquete */
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+form {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  width: 320px;
+  box-shadow: 0 0 10px rgba(246,139,30,0.7);
+}
+
+input, button {
+  width: 100%;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+input {
+  background: #333;
+  color: #eee;
+}
+
+input::placeholder {
+  color: #bbb;
+}
+
+button {
+  background: #f68b1e;
+  color: #111;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background: #d77005;
+}
+
+a {
+  color: #f68b1e;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul#lista-partidas {
+  list-style: none;
+  max-width: 600px;
+  width: 100%;
+}
+
+ul#lista-partidas li {
+  background: #222;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(246,139,30,0.5);
+  font-size: 1.1rem;
+}
+
+button#logout {
+  margin-top: 20px;
+  max-width: 150px;
+}
+
+@media (max-width: 400px) {
+  form {
+    width: 90vw;
+  }
+  ul#lista-partidas {
+    max-width: 90vw;
+  }
+}
