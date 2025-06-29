@@ -9,15 +9,35 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/matches')
-      .then(res => setMatches(res.data))
-      .catch(() => alert('Erro ao buscar partidas'))
-      .finally(() => setLoading(false));
-  }, []);
+  api.get('/partidas')
+    .then(res => {
+      if (res.data.status === 'success') {
+        setMatches(res.data.data);
+      } else {
+        alert('Nenhuma partida encontrada');
+        setMatches([]);
+      }
+    })
+    .catch(error => {
+      console.log('Erro ao buscar partidas:', error.message);
+      alert('Erro ao buscar partidas');
+    })
+    .finally(() => setLoading(false));
+}, []);
+
 
   function handleLogout() {
     signOut(auth).then(() => navigation.replace('Login'));
   }
+  function handleDelete(id) {
+  api.delete(`/partidas/${id}`)
+    .then(() => {
+      Alert.alert('Sucesso', 'Partida excluída');
+      setMatches(prev => prev.filter(p => p.id !== id));
+    })
+    .catch(() => Alert.alert('Erro ao excluir partida'));
+}
+
 
   return (
     <View style={styles.container}>
@@ -33,8 +53,19 @@ export default function HomeScreen({ navigation }) {
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.item}>
-              <Text style={styles.title}>{item.team1} x {item.team2}</Text>
-              <Text style={styles.subtitle}>{item.date} - {item.location}</Text>
+              <View style={styles.item}>
+                <Text style={styles.title}>{item.time_casa} x {item.time_visitante}</Text>
+                <Text style={styles.subtitle}>{item.data_partida}</Text>
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    <TouchableOpacity style={styles.editBtn} onPress={() => navigation.navigate('EditMatch', { partida: item })}>
+                      <Text style={styles.btnText}>Editar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.deleteBtn} onPress={() => handleDelete(item.id)}>
+                      <Text style={styles.btnText}>Excluir</Text>
+                    </TouchableOpacity>
+                  </View>
+              </View>
+
             </View>
           )}
         />
@@ -52,4 +83,8 @@ const styles = StyleSheet.create({
   item: { backgroundColor: '#222', padding: 15, marginBottom: 10, borderRadius: 8, shadowColor: '#f68b1e', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.5, shadowRadius: 5 },
   title: { color: '#eee', fontWeight: 'bold', fontSize: 16 },
   subtitle: { color: '#bbb', marginTop: 5 },
+  editBtn: { backgroundColor: '#f68b1e', padding: 8, borderRadius: 5, marginRight: 10 },
+  deleteBtn: { backgroundColor: '#cc0000', padding: 8, borderRadius: 5 },
+  btnText: { color: '#fff', fontWeight: 'bold' },
+
 });

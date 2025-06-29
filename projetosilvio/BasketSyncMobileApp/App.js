@@ -6,6 +6,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import NewMatchScreen from './screens/NewMatchScreen';
+import EditMatchScreen from './screens/EditMatchScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="NewMatch" component={NewMatchScreen} options={{ title: 'Nova Partida' }} />
+        <Stack.Screen name="EditMatch" component={EditMatchScreen} options={{ title: 'Editar Partida' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

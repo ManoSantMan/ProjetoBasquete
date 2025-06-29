@@ -9,12 +9,17 @@ export default function NewMatchScreen({ navigation }) {
   const [location, setLocation] = useState('');
 
   function handleSave() {
-    if (!team1 || !team2 || !date || !location) {
+    if (!team1 || !team2 || !date) {
       Alert.alert('Preencha todos os campos');
       return;
     }
 
-    api.post('/matches', { team1, team2, date, location })
+    api.post('/partidas', {
+      time_casa: team1,
+      time_visitante: team2,
+      data_partida: date
+    })
+
       .then(() => {
         Alert.alert('Partida cadastrada com sucesso');
         navigation.goBack();
@@ -27,7 +32,6 @@ export default function NewMatchScreen({ navigation }) {
       <TextInput style={styles.input} placeholder="Time 1" placeholderTextColor="#bbb" value={team1} onChangeText={setTeam1} />
       <TextInput style={styles.input} placeholder="Time 2" placeholderTextColor="#bbb" value={team2} onChangeText={setTeam2} />
       <TextInput style={styles.input} placeholder="Data (YYYY-MM-DD)" placeholderTextColor="#bbb" value={date} onChangeText={setDate} />
-      <TextInput style={styles.input} placeholder="Local" placeholderTextColor="#bbb" value={location} onChangeText={setLocation} />
       <TouchableOpacity style={styles.button} onPress={handleSave}><Text style={styles.buttonText}>Salvar Partida</Text></TouchableOpacity>
     </View>
   );
