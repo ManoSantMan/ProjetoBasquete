@@ -14,6 +14,8 @@ Route::get('/register', function () {
 Route::get('/home', [PartidaController::class, 'index']);
 Route::get('/partidas', [PartidaController::class, 'create']);
 Route::post('/partidas', [PartidaController::class, 'store']);
+Route::delete('/partidas/{id}', [PartidaController::class, 'destroy']);
+
 
 
 

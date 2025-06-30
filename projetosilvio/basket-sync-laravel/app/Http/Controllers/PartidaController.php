@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Partida;
+use Illuminate\Support\Facades\Http;
 
 class PartidaController extends Controller
 {
     public function index()
     {
-        $partidas = Partida::orderBy('data', 'asc')->get();
-        return view('home', compact('partidas'));
+        $response = Http::get(env('API_URL') . '/partidas');
+
+        if ($response->successful()) {
+            $partidas = $response->json();
+            return view('home', compact('partidas'));
+        }
+
+        return abort(500, 'Erro ao carregar partidas da API.');
     }
 
     public function create()
@@ -21,15 +27,33 @@ class PartidaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'time1' => 'required|string|max:255',
-            'time2' => 'required|string|max:255',
-            'local' => 'required|string|max:255',
-            'data' => 'required|date',
-            'hora' => 'required'
+            'time_casa' => 'required|string|max:255',
+            'time_visitante' => 'required|string|max:255',
+            'data_partida' => 'required|date',
         ]);
 
-        Partida::create($request->all());
+        $response = Http::post(env('API_URL') . '/partidas', [
+            'time_casa' => $request->input('time_casa'),
+            'time_visitante' => $request->input('time_visitante'),
+            'data_partida' => $request->input('data_partida'),
+        ]);
 
-        return redirect('/home')->with('success', 'Partida cadastrada!');
+        if ($response->successful()) {
+            return redirect('/home')->with('success', 'Partida cadastrada!');
+        }
+
+        return back()->withErrors('Erro ao cadastrar partida.');
     }
+
+    public function destroy($id)
+    {
+        $response = Http::delete(env('API_URL') . "/partidas/{$id}");
+
+        if ($response->successful()) {
+            return redirect('/home')->with('success', 'Partida excluída com sucesso!');
+        }
+
+        return back()->withErrors('Erro ao excluir a partida.');
+    }
+
 }
