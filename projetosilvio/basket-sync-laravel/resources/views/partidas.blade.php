@@ -9,18 +9,18 @@
 </head>
 <body>
     <h2>Nova Partida</h2>
-    <form method="POST" action="/partidas">
+    <form method="POST" action="/partidas" class="formulario">
         @csrf
-        <input type="text" name="time1" placeholder="Nome do Time 1" required><br>
-        <input type="text" name="time2" placeholder="Nome do Time 2" required><br>
-        <input type="text" name="local" placeholder="Local" required><br>
-        <input type="date" name="data" required><br>
-        <input type="time" name="hora" required><br>
+
+        <input type="text" name="time_casa" placeholder="Nome do Time da Casa" required>
+        <input type="text" name="time_visitante" placeholder="Nome do Time Visitante" required>
+        <input type="date" name="data_partida" min="{{ date('Y-m-d') }}" required>
+
         <button type="submit">Cadastrar Partida</button>
     </form>
 
     <br>
-    <a href="/home">Voltar para Home</a>
+    <a href="/home" class="btn-voltar">Voltar para Home</a>
 
     <script>
         firebase.auth().onAuthStateChanged(user => {

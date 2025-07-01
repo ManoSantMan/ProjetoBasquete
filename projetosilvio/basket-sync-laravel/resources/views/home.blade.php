@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Home - BasketSync</title>
-    <link rel="stylesheet" href="/css/style.css" />
+   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="/firebase.js"></script>
@@ -15,10 +15,33 @@
     @endif
 
     <ul id="lista-partidas">
-        @foreach($partidas as $partida)
-            <li>{{ $partida->time1 }} vs {{ $partida->time2 }} - {{ $partida->local }} - {{ $partida->data }} às {{ $partida->hora }}</li>
-        @endforeach
+    @forelse($partidas as $partida)
+    <li>
+    <span>
+        {{ $partida['time_casa'] }} vs {{ $partida['time_visitante'] }} -
+        {{ \Carbon\Carbon::parse($partida['data_partida'])->format('d/m/Y') }}
+    </span>
+
+    <div class="acoes">
+        <!-- LINK CORRETO PARA EDIÇÃO -->
+        <a href="{{ url('/partidas/' . $partida['id'] . '/editar') }}">Editar</a>
+
+        <!-- FORMULÁRIO DE EXCLUSÃO -->
+        <form action="/partidas/{{ $partida['id'] }}" method="POST" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta partida?')">Excluir</button>
+        </form>
+    </div>
+</li>
+
+
+    @empty
+        <li>Nenhuma partida encontrada.</li>
+    @endforelse
+
     </ul>
+
 
     <a href="/partidas">Cadastrar nova partida</a><br><br>
 
