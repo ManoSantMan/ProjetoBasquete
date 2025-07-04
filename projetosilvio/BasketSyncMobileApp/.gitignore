@@ -1,0 +1,16 @@
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+.env
+
+# React Native / Expo
+.expo
+.expo-shared
+web-build
+dist
+build
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
